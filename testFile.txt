@@ -1,1 +1,0 @@
-[{"what":"22222","how":"2222","checkedValue":1}][{"what":"3333","how":"3333","checkedValue":1}][{"what":"Hallo","how":"Tschau","checkedValue":3}]
