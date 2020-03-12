@@ -1,5 +1,5 @@
 <template>
-  <div class="date-picker">
+  <div class="date-picker" >
     <h1>{{ title }}</h1>
     <textarea
       rows="4"
