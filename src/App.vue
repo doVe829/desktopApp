@@ -31,7 +31,6 @@
       <button type="button" @click="read">READ STUFF</button>
       {{ test }}
     </div>
-    <div></div>
   </div>
 </template>
 
@@ -80,6 +79,9 @@ export default {
       fs.appendFile("testFile.txt", content, err => {
         if (err) console.log(err);
         alert("File has been saved");
+        this.what.txt = '';
+        this.how.txt = '';
+        this.checked = '';
       });
     },
     saveData() {
