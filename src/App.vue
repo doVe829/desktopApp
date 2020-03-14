@@ -25,31 +25,44 @@
     </div>
     <!-- SECOND PAGE -->
     <div class="style">
-    
-      
-      Gestern lag deine allgemmeine Laune bei {{recapMoods[0]}} und heute bei {{recapMoods[1]}}.
-      <span v-if="recapMoods[0]>recapMoods[1]">
+      Gestern lag deine allgemmeine Laune bei {{ recapMoods[0] }} und heute bei
+      {{ recapMoods[1] }}.
+      <span v-if="recapMoods[0] > recapMoods[1]">
         Eine gute Sache!
       </span>
       <span v-else> Eine nicht so gute Sache.</span>
 
       <div v-if="savedDataArr.length > 0">
-        Deine Laune liegt in den  vergangenen {{savedDataArr.length}} Tagen bei durschnittlich {{ avgValueMoods }}</div>
-          <h1>
-      Eine übersicht der Eingetragenen Werte:
-      </h1>
-      <button @click="openSummary = !openSummary" type="button"> 
-     Klick mir
-      </button>
-         <div class="hyp" v-if="openSummary === true">
-      <div  v-for="(saves,index) in savedDataArr" :key="index" :class="index.toString()">
-  
-        <div>Was hat mich bedrückt:{{saves.what}}</div>
-         <div>Was könnte ich daran ändern:{{saves.how}}</div>
-        <div>Was war mein Gesamteindruck:{{saves.checkedValue}}</div>
-          <br>
-
+        Deine Laune liegt in den vergangenen {{ savedDataArr.length }} Tagen bei
+        durschnittlich {{ avgValueMoods }}
       </div>
+      <h1>
+        Eine übersicht der Eingetragenen Werte:
+      </h1>
+      <button @click="openSummary = !openSummary" type="button">
+        Klick mir
+      </button>
+      <div class="hyp" v-if="openSummary === true">
+        <div
+          v-for="(saves, index) in savedDataArr"
+          :key="index"
+          :class="index.toString()"
+        >
+          <h2>Tag {{ index + 1 }}</h2>
+          <div>
+            <h3>Was hat mich bedrückt:</h3>
+            {{ saves.what }}
+          </div>
+          <div>
+            <h3>Was könnte ich daran ändern:</h3>
+            {{ saves.how }}
+          </div>
+          <div>
+            <h3>Was war mein Gesamteindruck:</h3>
+            {{ saves.checkedValue }}
+          </div>
+          <br />
+        </div>
       </div>
     </div>
   </div>
@@ -75,20 +88,22 @@ export default {
         txt: ""
       },
       savedDataArr: "",
-      openSummary:false
+      openSummary: false
     };
   },
   computed: {
-    recapMoods(){
-      if(this.savedDataArr.length === 0 || this.savedDataArr === ''){
+    recapMoods() {
+      if (this.savedDataArr.length === 0 || this.savedDataArr === "") {
         //if second page is finished put this on next page button
-      this.read();
+        this.read();
       }
-      let yesterday= [...this.savedDataArr];
+      let yesterday = [...this.savedDataArr];
       let checkedValue = yesterday.map(el => el.checkedValue);
       //returns moods of yesterday and today
-      return [checkedValue[checkedValue.length-2],checkedValue[checkedValue.length-1]];
-
+      return [
+        checkedValue[checkedValue.length - 2],
+        checkedValue[checkedValue.length - 1]
+      ];
     },
     avgValueMoods() {
       let sum = [...this.savedDataArr];
@@ -176,7 +191,7 @@ export default {
   background: #2c3e50;
   color: black;
 }
-.hyp{
-    word-break:break-all;
+.hyp {
+  word-break: break-all;
 }
 </style>
