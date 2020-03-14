@@ -1,16 +1,14 @@
 <template>
   <div id="app">
-    <div class="style" v-if="submitted === false">
+    <div class="style">
       <h1>Hi! Wie fühlst du dich heute?</h1>
       <texts v-model="what" :title="'Was hat dich bedrückt?'"></texts>
       <p>
         <!-- DEBUG -->
-        {{ what.txt }}
       </p>
       <texts v-model="how" :title="'Was könntest du daran ändern?'"></texts>
       <p>
         <!-- DEBUG -->
-        {{ how.txt }}
       </p>
       <div class="basic-grid">
         <div v-for="(mood, index) in moods" :key="index">
@@ -18,27 +16,46 @@
           <label :for="mood">{{ mood.text }}</label>
         </div>
         <!-- DEBUG -->
-        <span>Checked names: {{ checked }}</span>
       </div>
       <button @click="saveAsJson()" class="float-button" type="button">
         Next page
       </button>
 
       <button type="button" @click="read">READ STUFF</button>
-      <!-- DEBUG -->
-      <!-- <div v-if="savedValueArr.length > 0">
-        {{ savedValueArr }}
-      </div> -->
-      
-      <!-- Insgesamt : {{ savedValueArr.Name.what }} -->
     </div>
     <!-- SECOND PAGE -->
-    <div></div>
+    <div class="style">
+    
+      
+      Gestern lag deine allgemmeine Laune bei {{recapMoods[0]}} und heute bei {{recapMoods[1]}}.
+      <span v-if="recapMoods[0]>recapMoods[1]">
+        Eine gute Sache!
+      </span>
+      <span v-else> Eine nicht so gute Sache.</span>
+
+      <div v-if="savedDataArr.length > 0">
+        Deine Laune liegt in den  vergangenen {{savedDataArr.length}} Tagen bei durschnittlich {{ avgValueMoods }}</div>
+          <h1>
+      Eine übersicht der Eingetragenen Werte:
+      </h1>
+      <button @click="openSummary = !openSummary" type="button"> 
+     Klick mir
+      </button>
+         <div class="hyp" v-if="openSummary === true">
+      <div  v-for="(saves,index) in savedDataArr" :key="index" :class="index.toString()">
+  
+        <div>Was hat mich bedrückt:{{saves.what}}</div>
+         <div>Was könnte ich daran ändern:{{saves.how}}</div>
+        <div>Was war mein Gesamteindruck:{{saves.checkedValue}}</div>
+          <br>
+
+      </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// require('src/renderer.js');
 import texts from "./components/texts.vue";
 
 export default {
@@ -57,14 +74,28 @@ export default {
       how: {
         txt: ""
       },
-      savedValueArr: [],
-      savedDataArr :''
+      savedDataArr: "",
+      openSummary:false
     };
   },
   computed: {
-    summary() {
-      let sum = this.savedValueArr[0];
-      return sum;
+    recapMoods(){
+      if(this.savedDataArr.length === 0 || this.savedDataArr === ''){
+        //if second page is finished put this on next page button
+      this.read();
+      }
+      let yesterday= [...this.savedDataArr];
+      let checkedValue = yesterday.map(el => el.checkedValue);
+      //returns moods of yesterday and today
+      return [checkedValue[checkedValue.length-2],checkedValue[checkedValue.length-1]];
+
+    },
+    avgValueMoods() {
+      let sum = [...this.savedDataArr];
+      let ree = sum.map(el => el.checkedValue);
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      ree = ree.reduce(reducer) / sum.length;
+      return ree;
     },
     moods() {
       let moodArr = [
@@ -104,7 +135,7 @@ export default {
           alert("An error ocurred reading the file :" + err.message);
           return;
         }
-        // Change how to handle the file content
+        // getting data from text file and mutate it back to an array of objects to use again
         let dataParse = data.split("|");
         let newArr = [];
         for (let index = 0; index < dataParse.length - 1; index++) {
@@ -144,5 +175,8 @@ export default {
 .style {
   background: #2c3e50;
   color: black;
+}
+.hyp{
+    word-break:break-all;
 }
 </style>

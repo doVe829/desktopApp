@@ -1,1 +1,0 @@
-{"what":"111111","how":"1111","checkedValue":1}|{"what":"222","how":"222","checkedValue":""}|{"what":"","how":"","checkedValue":""}|{"what":"aaaaaa","how":"aaaa","checkedValue":3}|{"what":"444","how":"444","checkedValue":3}|
