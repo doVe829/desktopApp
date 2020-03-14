@@ -1,13 +1,15 @@
 <template>
   <div id="app">
-    <div v-if="submitted === false">
+    <div class="style" v-if="submitted === false">
       <h1>Hi! Wie fühlst du dich heute?</h1>
       <texts v-model="what" :title="'Was hat dich bedrückt?'"></texts>
       <p>
+        <!-- DEBUG -->
         {{ what.txt }}
       </p>
       <texts v-model="how" :title="'Was könntest du daran ändern?'"></texts>
       <p>
+        <!-- DEBUG -->
         {{ how.txt }}
       </p>
       <div class="basic-grid">
@@ -15,22 +17,23 @@
           <input type="radio" :value="mood.value" v-model="checked" />
           <label :for="mood">{{ mood.text }}</label>
         </div>
+        <!-- DEBUG -->
         <span>Checked names: {{ checked }}</span>
       </div>
-      <button
-        @click="
-          saveData();
-          saveAsJson();
-        "
-        class="float-button"
-        type="button"
-      >
+      <button @click="saveAsJson()" class="float-button" type="button">
         Next page
       </button>
 
       <button type="button" @click="read">READ STUFF</button>
-      {{ test }}
+      <!-- DEBUG -->
+      <!-- <div v-if="savedValueArr.length > 0">
+        {{ savedValueArr }}
+      </div> -->
+      
+      <!-- Insgesamt : {{ savedValueArr.Name.what }} -->
     </div>
+    <!-- SECOND PAGE -->
+    <div></div>
   </div>
 </template>
 
@@ -45,7 +48,6 @@ export default {
   },
   data() {
     return {
-      test: [],
       submitted: false,
       checked: "",
 
@@ -55,10 +57,15 @@ export default {
       how: {
         txt: ""
       },
-      savedValueArr: []
+      savedValueArr: [],
+      savedDataArr :''
     };
   },
   computed: {
+    summary() {
+      let sum = this.savedValueArr[0];
+      return sum;
+    },
     moods() {
       let moodArr = [
         { text: "🙂 Es eigentlich ganz okay", value: 1 },
@@ -70,52 +77,45 @@ export default {
   },
   methods: {
     saveAsJson() {
-      const fs = require("fs");
-      // var app = require('electron').remote;
-      // var dialog = app.dialog;
-
-      // let map = this.savedValueArr.map((el) => el.what);
-      var content = JSON.stringify(this.savedValueArr);
-      fs.appendFile("testFile.txt", content, err => {
-        if (err) console.log(err);
-        alert("File has been saved");
-        this.what.txt = '';
-        this.how.txt = '';
-        this.checked = '';
-      });
-    },
-    saveData() {
       let summaryValues = {
         what: this.what.txt,
         how: this.how.txt,
         checkedValue: this.checked
       };
-      this.savedValueArr.push(summaryValues);
-      // this.submitted = true;
+      const fs = require("fs");
+      let content = "";
+
+      content += `${JSON.stringify(summaryValues)}|`;
+      fs.appendFile("test.txt", content, err => {
+        if (err) console.log(err);
+        alert("File has been saved");
+        console.log(content);
+      });
+
+      this.what.txt = "";
+      this.how.txt = "";
+      this.checked = "";
     },
+
     read() {
       const fs = require("fs");
-      // var app = require('electron').remote;
-      // var dialog = app.dialog;
-
-      //   dialog.showOpenDialog((fileNames) => {
-      // // fileNames is an array that contains all the selected
-      // if(fileNames === undefined){
-      //     console.log("No file selected");
-      //     return;
-      // }
-
-      fs.readFile("testFile.txt", "utf-8", (err, data) => {
+      fs.readFile("test.txt", "utf-8", (err, data) => {
         if (err) {
           alert("An error ocurred reading the file :" + err.message);
           return;
         }
-
         // Change how to handle the file content
-        console.log("The file content is : " + data);
-        this.test.push(data);
+        let dataParse = data.split("|");
+        let newArr = [];
+        for (let index = 0; index < dataParse.length - 1; index++) {
+          newArr.push(dataParse[index]);
+        }
+        console.log(`newArr : ${newArr}`);
+        const backToArray = newArr.map(el => JSON.parse(el));
+        // newArr.map((el) => JSON.parse(el));
+        console.log(backToArray);
+        this.savedDataArr = backToArray;
       });
-      // });
     }
   }
 };
@@ -140,5 +140,9 @@ export default {
 .float-button {
   float: right;
   margin-top: 2em;
+}
+.style {
+  background: #2c3e50;
+  color: black;
 }
 </style>
