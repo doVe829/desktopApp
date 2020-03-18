@@ -1,31 +1,28 @@
 <template>
   <div id="app">
-    <div class="style">
+    <div v-if="firstPage" class="style">
       <h1>Hi! Wie fühlst du dich heute?</h1>
       <texts v-model="what" :title="'Was hat dich bedrückt?'"></texts>
       <p>
-        <!-- DEBUG -->
       </p>
       <texts v-model="how" :title="'Was könntest du daran ändern?'"></texts>
       <p>
-        <!-- DEBUG -->
       </p>
       <div class="basic-grid">
         <div v-for="(mood, index) in moods" :key="index">
           <input type="radio" :value="mood.value" v-model="checked" />
           <label :for="mood">{{ mood.text }}</label>
         </div>
-        <!-- DEBUG -->
       </div>
       <button @click="saveAsJson()" class="float-button" type="button">
-        Next page
+        Absenden!
       </button>
-
-      <button type="button" @click="read">READ STUFF</button>
+      <div  class="box red"></div>
     </div>
+    
     <!-- SECOND PAGE -->
-    <div class="style">
-      Gestern lag deine allgemmeine Laune bei {{ recapMoods[0] }} und heute bei
+    <div v-else class="style">
+      Gestern lag deine allgemeine Laune bei {{ recapMoods[0] }} und heute bei
       {{ recapMoods[1] }}.
       <span v-if="recapMoods[0] > recapMoods[1]">
         Eine gute Sache!
@@ -37,7 +34,7 @@
         durschnittlich {{ avgValueMoods }}
       </div>
       <h1>
-        Eine übersicht der Eingetragenen Werte:
+        Eine Übersicht deiner Eintragung:
       </h1>
       <button @click="openSummary = !openSummary" type="button">
         Klick mir
@@ -88,7 +85,8 @@ export default {
         txt: ""
       },
       savedDataArr: "",
-      openSummary: false
+      openSummary: false,
+      firstPage: true
     };
   },
   computed: {
@@ -114,12 +112,13 @@ export default {
     },
     moods() {
       let moodArr = [
-        { text: "🙂 Es eigentlich ganz okay", value: 1 },
+        { text: "🙂 Es ist eigentlich ganz okay", value: 1 },
         { text: "😑 Es nervt mich schon", value: 2 },
-        { text: "😱  was soll der Kack?!", value: 3 }
+        { text: "😱  Furchtbar", value: 3 }
       ];
       return moodArr;
-    }
+    },
+   
   },
   methods: {
     saveAsJson() {
@@ -135,12 +134,13 @@ export default {
       fs.appendFile("test.txt", content, err => {
         if (err) console.log(err);
         alert("File has been saved");
-        console.log(content);
+        // console.log(content);
       });
 
       this.what.txt = "";
       this.how.txt = "";
       this.checked = "";
+      this.firstPage = false;
     },
 
     read() {
@@ -156,10 +156,10 @@ export default {
         for (let index = 0; index < dataParse.length - 1; index++) {
           newArr.push(dataParse[index]);
         }
-        console.log(`newArr : ${newArr}`);
+        // console.log(`newArr : ${newArr}`);
         const backToArray = newArr.map(el => JSON.parse(el));
         // newArr.map((el) => JSON.parse(el));
-        console.log(backToArray);
+        // console.log(backToArray);
         this.savedDataArr = backToArray;
       });
     }
@@ -188,10 +188,28 @@ export default {
   margin-top: 2em;
 }
 .style {
-  background: #2c3e50;
+  background: #FFFFFF;
   color: black;
 }
 .hyp {
   word-break: break-all;
 }
+
+/* .box {
+  float: left;
+  height: 20px;
+  width: 20px;
+  margin-bottom: 15px;
+  border: 1px solid black;
+  clear: both;
+}
+.green{
+  background-color: green;
+}
+.yellow {
+  background-color: yellow;
+}
+.red {
+  background-color: red;
+} */
 </style>
