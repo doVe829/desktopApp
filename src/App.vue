@@ -3,11 +3,9 @@
     <div v-if="firstPage" class="style">
       <h1>Hi! Wie fühlst du dich heute?</h1>
       <texts v-model="what" :title="'Was hat dich bedrückt?'"></texts>
-      <p>
-      </p>
+      <p></p>
       <texts v-model="how" :title="'Was könntest du daran ändern?'"></texts>
-      <p>
-      </p>
+      <p></p>
       <div class="basic-grid">
         <div v-for="(mood, index) in moods" :key="index">
           <input type="radio" :value="mood.value" v-model="checked" />
@@ -17,9 +15,9 @@
       <button @click="saveAsJson()" class="float-button" type="button">
         Absenden!
       </button>
-      <div  class="box red"></div>
+      <div class="box red"></div>
     </div>
-    
+
     <!-- SECOND PAGE -->
     <div v-else class="style">
       Gestern lag deine allgemeine Laune bei {{ recapMoods[0] }} und heute bei
@@ -117,8 +115,7 @@ export default {
         { text: "😱  Furchtbar", value: 3 }
       ];
       return moodArr;
-    },
-   
+    }
   },
   methods: {
     saveAsJson() {
@@ -188,7 +185,7 @@ export default {
   margin-top: 2em;
 }
 .style {
-  background: #FFFFFF;
+  background: #ffffff;
   color: black;
 }
 .hyp {
