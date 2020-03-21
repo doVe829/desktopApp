@@ -1,6 +1,6 @@
 <template>
   <div class="date-picker">
-    <h1>{{ title }}</h1>
+    <h3>{{ title }}</h3>
     <textarea
       rows="4"
       cols="50"

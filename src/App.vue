@@ -1,25 +1,27 @@
 <template>
   <div id="app">
-    <div v-if="firstPage" class="style">
-      <h1>Hi! Wie fühlst du dich heute?</h1>
+    <section v-if="firstPage" class="style">
+      <h1>Hi, wie fühlst du dich heute?</h1>
       <texts v-model="what" :title="'Was hat dich bedrückt?'"></texts>
-      <p></p>
       <texts v-model="how" :title="'Was könntest du daran ändern?'"></texts>
-      <p></p>
-      <div class="basic-grid">
-        <div v-for="(mood, index) in moods" :key="index">
-          <input type="radio" :value="mood.value" v-model="checked" />
-          <label :for="mood">{{ mood.text }}</label>
+      <div class="mt-2">
+        <h3>
+          Wähle doch bitte eine Option, die deine Gesamtlaune widerspiegelt
+        </h3>
+        <div class="basic-grid">
+          <div v-for="(mood, index) in moods" :key="index">
+            <input type="radio" :value="mood.value" v-model="checked" />
+            <label :for="mood">{{ mood.text }}</label>
+          </div>
         </div>
       </div>
       <button @click="saveAsJson()" class="float-button" type="button">
         Absenden!
       </button>
-      <div class="box red"></div>
-    </div>
+    </section>
 
     <!-- SECOND PAGE -->
-    <div v-else class="style">
+    <section v-else class="style">
       Gestern lag deine allgemeine Laune bei {{ recapMoods[0] }} und heute bei
       {{ recapMoods[1] }}.
       <span v-if="recapMoods[0] > recapMoods[1]">
@@ -59,7 +61,7 @@
           <br />
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -181,8 +183,13 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 .float-button {
-  float: right;
+  /* float: right; */
   margin-top: 2em;
+  border-radius: 1em;
+  width: 30%;
+  padding: 1em;
+  text-align: center;
+  background-color: white;
 }
 .style {
   background: #ffffff;
@@ -209,4 +216,8 @@ export default {
 .red {
   background-color: red;
 } */
+.mt-2 {
+  margin-top: 8em;
+  margin-bottom: 9em;
+}
 </style>
