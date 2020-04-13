@@ -1,28 +1,31 @@
 <template>
   <div id="app">
     <section v-if="firstPage" class="style container">
-      <h1 class="space">Hi, wie fühlst du dich heute?</h1>
-      <texts v-model="what" :title="'Was hat dich bedrückt?'"></texts>
-      <texts v-model="how" :title="'Was könntest du daran ändern?'"></texts>
-      <div class="mt-2">
-        <h3>
-          Wähle doch bitte eine Option, die deine Gesamtlaune widerspiegelt
-        </h3>
-        <div class="basic-grid">
-          <div v-for="(mood, index) in moods" :key="index">
-            <b-form-radio :value="mood.value" v-model="checked">
-              {{ mood.text }}
-            </b-form-radio>
+      <div class="container">
+        <h1 class="mb-4">Hi, wie fühlst du dich heute?</h1>
+
+        <texts v-model="what" :title="'Was hat dich bedrückt?'"></texts>
+        <texts
+          class="mt-5"
+          v-model="how"
+          :title="'Was könntest du daran ändern?'"
+        ></texts>
+        <div class="mt-5">
+          <h3>
+            Wähle doch bitte eine Option, die deine Gesamtlaune widerspiegelt
+          </h3>
+          <div class="row">
+            <div v-for="(mood, index) in moods" :key="index" class="col-sm-4">
+              <b-form-radio :value="mood.value" v-model="checked">
+                {{ mood.text }}
+              </b-form-radio>
+            </div>
           </div>
         </div>
+        <b-button @click="saveAsJson()" variant="outline-success" class="mt-5">
+          Absenden!
+        </b-button>
       </div>
-      <b-button
-        @click="saveAsJson()"
-        class="float-button"
-        variant="outline-success"
-      >
-        Absenden!
-      </b-button>
     </section>
 
     <!-- SECOND PAGE -->
@@ -44,35 +47,39 @@
       <span v-else-if="recapMoods[1] > 0"
         ><h3>Mach' dir nichts draus!</h3></span
       >
-
       <div v-if="savedDataArr.length > 0">
-        <p>
+        <h1>
           Deine Laune liegt in den vergangenen {{ savedDataArr.length }} Tagen
           bei durschnittlich {{ avgValueMoods }}
-        </p>
+        </h1>
       </div>
-
-      <h1>In Farben</h1>
+      <h3 class="mt-4 col-sm-6">Die vergangenen Tage in Farben</h3>
+      <b-button
+        variant="light"
+        class="col-sm-2 btn-pos row"
+        size="sm"
+        @click="showDays = !showDays"
+      >
+        {{ daysOnButton }}
+      </b-button>
       <div class="row">
         <div
           v-for="(colour, index) in colourCode"
           :key="index"
           :class="className(colour)"
-          class="outline"
+          class="col-sm-2"
         >
-          {{ index + 1 }}
+          <div v-if="showDays">
+            {{ index + 1 }}
+          </div>
         </div>
       </div>
-
       <br />
-      <h1>
-        Eine Übersicht deiner Eintragung:
-      </h1>
       <b-button
         v-b-toggle.collapse-2
         class="m-1 float-button"
         variant="outline-info"
-        >Klick mich</b-button
+        >Eine Übersicht deiner Eintragung:</b-button
       >
       <b-collapse id="collapse-2">
         <div class="hyp">
@@ -122,10 +129,18 @@ export default {
       },
       savedDataArr: "",
       openSummary: false,
-      firstPage: true
+      firstPage: true,
+      showDays: false
     };
   },
   computed: {
+    daysOnButton() {
+      if (!this.showDays) {
+        return "Zeig mir die Tage!";
+      } else {
+        return "Versteck' die Tage";
+      }
+    },
     colourCode() {
       let obj = [...this.savedDataArr];
       let x = obj.map(el => el.checkedValue.toString());
@@ -217,35 +232,12 @@ export default {
 </script>
 
 <style>
-.outline {
-  color: white;
-}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-.space {
-  margin-bottom: 2em;
-}
-
-.basic-grid {
-  display: grid;
-  gap: 1rem;
-  justify-items: center;
-
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-.float-button {
-  margin-top: 2em;
-  border-radius: 1em;
-  width: 30%;
-  padding: 1em;
-  text-align: center;
-  background-color: white;
 }
 .style {
   background: #ffffff;
@@ -258,19 +250,13 @@ export default {
   margin-top: 8em;
   margin-bottom: 9em;
 }
-.button-grid {
-  display: grid;
-  justify-items: center;
-  gap: 1em;
-  grid-template-columns: repeat(auto-fit, minmax(20px, 0.5fr));
-}
 .green {
   height: 30px;
   width: 30px;
   background-color: #8be28b;
 }
 .yellow {
-  background-color: #ffe561;
+  background-color: #fcfc4b;
   height: 30px;
   width: 30px;
 }
