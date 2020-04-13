@@ -27,10 +27,13 @@
 
     <!-- SECOND PAGE -->
     <section v-else class="style container">
-      <h5>
-        Gestern lag deine allgemeine Laune bei {{ recapMoods[0] }} und heute bei
-        {{ recapMoods[1] }}.
-      </h5>
+      <div v-if="typeof recapMoods[0] === 'number'">
+        {{ recapMoods[0] }}
+        <h5>
+          Gestern lag deine allgemeine Laune bei {{ recapMoods[0] }} und heute
+          bei {{ recapMoods[1] }}.
+        </h5>
+      </div>
       <span
         v-if="
           recapMoods[0] > recapMoods[1] ||
@@ -39,7 +42,9 @@
       >
         <h3>Eine gute Sache!</h3>
       </span>
-      <span v-else><h3>Mach' dir nichts draus!</h3></span>
+      <span v-else-if="recapMoods[1] > 0"
+        ><h3>Mach' dir nichts draus!</h3></span
+      >
 
       <div v-if="savedDataArr.length > 0">
         <p>
