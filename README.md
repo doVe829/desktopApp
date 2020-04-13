@@ -2,7 +2,8 @@
 
 ## currently only in german
 
-## known issues saved values dont update properly after clicking on the absenden button
+## known issues 
+saved values dont update properly after clicking on the absenden button
 
 ### How to use
 ```
