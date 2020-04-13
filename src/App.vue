@@ -28,7 +28,6 @@
     <!-- SECOND PAGE -->
     <section v-else class="style container">
       <div v-if="typeof recapMoods[0] === 'number'">
-        {{ recapMoods[0] }}
         <h5>
           Gestern lag deine allgemeine Laune bei {{ recapMoods[0] }} und heute
           bei {{ recapMoods[1] }}.
@@ -185,6 +184,9 @@ export default {
       fs.appendFile("test.txt", content, err => {
         if (err) console.log(err);
         alert("File has been saved");
+        this.$nextTick(() => {
+          this.read();
+        });
       });
 
       this.what.txt = "";
