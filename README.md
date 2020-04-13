@@ -9,4 +9,8 @@ instead of yarn electron:serve run yarn electron:build
 to use this as a desktop app.
 ```
 
+### demo
+
+![Moods Demo](demo/moods.gif)
+
 
