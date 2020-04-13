@@ -1,10 +1,11 @@
 <template>
-  <div class="date-picker">
+  <div class="date-picker container">
     <h3>{{ title }}</h3>
     <textarea
       rows="4"
       cols="50"
       ref="text"
+      placeholder="Schreib' etwas..."
       :value="value.txt"
       @input="updateDate()"
     />
