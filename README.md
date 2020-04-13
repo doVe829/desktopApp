@@ -1,24 +1,7 @@
 # moods
 
-## Project setup
+## A simple app build in electron with vue
 ```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
+clone rep, open with your favourite editor run yarn electron:serve
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
