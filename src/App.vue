@@ -217,7 +217,7 @@ export default {
           alert("An error ocurred reading the file :" + err.message);
           return;
         }
-        // getting data from text file and mutate it back to an array of objects to use again
+        // getting data from text file and mutate it back to an array of objects to use it again
         let dataParse = data.split("|");
         let newArr = [];
         for (let index = 0; index < dataParse.length - 1; index++) {
